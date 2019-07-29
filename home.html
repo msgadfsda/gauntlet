@@ -39,6 +39,7 @@
         text-align: left;
         padding: 20px 0;
         font-size: 18px;
+        width: 500px;
       }
       .instructions div {
         color: cyan;
@@ -102,8 +103,8 @@
     </audio>
 
     <div class="instructions">
-      <div>Instructions:</div> <br />As soon as the boss does its first attack click on the attack style the boss used. <br/> In the case of a trample attack press the 'I got trampled' button.
-      <br/>
+      <div>Instructions:</div> <br />As soon as the boss does its first attack click on the attack style the boss used. The timer assumes you clicked one second after being hit. <br/><br/> In the case of a trample attack press the 'I got trampled' button.
+      <br/><br/>
       Turn sound on for audio notification
     </div>
     <div>
@@ -148,19 +149,7 @@
         myTimeout = startLoop();
       })
       $('.Tramplebutton').click(function(){
-        if(count >= 1 && count <= 3) {
-          if(currentStyle === 'mage') {
-            currentStyle = 'range'
-            count += 9;
-          } else if(currentStyle === 'range') {
-            currentStyle= 'mage'
-            count += 9;
-          }
-        } else {
-          count -= 3;
-        }
-        const nextStyle = currentStyle === 'mage' ? 'Range' : 'Mage'
-        $('.prayTimer').html(`Pray ${nextStyle} in <span>${Math.abs(count -12)}</span> seconds`)
+        count -= 3;
       })
       $('.ResetButton').click(function(){
         currentStyle = null;
