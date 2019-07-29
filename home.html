@@ -198,10 +198,10 @@
         const neatCurrentStyle = currentStyle === 'mage' ? 'Mage' : 'Range'
         $('.currentPrayer').html(`Pray <span class="${currentStyle}">${neatCurrentStyle}</span>`)
         if (count === 10) {
-          one.play();
+          two.play();
         }
         if (count === 11) {
-          two.play();
+          one.play();
         }
         if (count === 12) {
           if (nextStyle === 'Range') {
