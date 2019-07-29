@@ -1,0 +1,231 @@
+
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+    let count = 4;
+    let currentStyle = null;
+    let myTimeout;
+    </script>
+    <style>
+      button {
+        padding: 25px 80px;
+        color: white;
+        margin: 0 20px;
+        font-size: 24px;
+        cursor: pointer;
+      }
+      .RangeButton {
+        background: #00AE68;
+      }
+      .RangeButton:hover {
+        background: #21825B;
+      }
+      .MageButton {
+        background: #5DC8CD;
+      }
+      .MageButton:hover {
+        background: #01939A;
+      }
+      body {
+        background: black;
+        color: white;
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+        align-items: center;
+      }
+      .instructions {
+        text-align: left;
+        padding: 20px 0;
+        font-size: 18px;
+      }
+      .instructions div {
+        color: cyan;
+        text-align: center;
+      }
+      .hidden {
+        display: none;
+      }
+      .Tramplebutton {
+        background: #ff6600;
+      }
+      .Tramplebutton:hover {
+        background: #993d00;
+      }
+      .Resetbutton {
+        background: #ff0000;
+      }
+      .Resetbutton:hover {
+        background: #660000;
+      }
+      .startedStatus {
+        text-align: center;
+        padding: 20px 0;
+      }
+      .currentPrayer {
+        font-size: 32px;
+      }
+      .currentPrayer span.mage {
+        color: #5DC8CD;
+        font-weight: bold;
+      }
+      .currentPrayer span.range {
+        color: #00AE68;
+        font-weight: bold;
+      }
+      .prayTimer {
+        font-size: 32px;
+      }
+      .prayTimer span {
+        font-size: 48px;
+      }
+    </style>
+    <title>Gauntlet Helper</title>
+  </head>
+  <body >
+    <audio id="one">
+      <source src="one.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    <audio id="two">
+        <source src="two.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="mage">
+        <source src="mage.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="range">
+        <source src="range.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div class="instructions">
+      <div>Instructions:</div> <br />As soon as the boss does its first attack click on the attack style the boss used. <br/> In the case of a trample attack press the 'I got trampled' button.
+      <br/>
+      Turn sound on for audio notification
+    </div>
+    <div>
+      <div class="initialState">
+        <button class="RangeButton">
+          Range
+        </button>
+        <button class="MageButton">
+          Mage
+        </button>
+      </div>
+      <div class="startedState hidden">
+        <div class="startedStatus">
+          <div class="currentPrayer"></div>
+          <div class="prayTimer"></div>
+        </div>
+        <button class="TrampleButton">
+            I got trampled
+        </button>
+        <button class="ResetButton">
+            Reset
+        </button>
+      </div>
+    </div>
+    <script>
+    $(document).ready(function(){
+      let oneAudio = document.getElementById("one");
+      let twoAudio = document.getElementById("two");
+      let mageAudio = document.getElementById("mage");
+      let rangeAudio = document.getElementById("range");
+
+      $('.RangeButton').click(function(){
+        currentStyle = 'range';
+        $('.initialState').addClass('hidden');
+        $('.startedState').removeClass('hidden');
+        myTimeout = startLoop();
+      })
+      $('.MageButton').click(function(){
+        currentStyle = 'mage';
+        $('.initialState').addClass('hidden');
+        $('.startedState').removeClass('hidden');
+        myTimeout = startLoop();
+      })
+      $('.Tramplebutton').click(function(){
+        if(count >= 1 && count <= 3) {
+          if(currentStyle === 'mage') {
+            currentStyle = 'range'
+            count += 9;
+          } else if(currentStyle === 'range') {
+            currentStyle= 'mage'
+            count += 9;
+          }
+        } else {
+          count -= 3;
+        }
+        const nextStyle = currentStyle === 'mage' ? 'Range' : 'Mage'
+        $('.prayTimer').html(`Pray ${nextStyle} in <span>${Math.abs(count -12)}</span> seconds`)
+      })
+      $('.ResetButton').click(function(){
+        currentStyle = null;
+        count = 4;
+        $('.initialState').removeClass('hidden');
+        $('.startedState').addClass('hidden');
+        clearTimeout(myTimeout);
+      })
+
+      const startLoop = () => {
+        const neatCurrentStyle = currentStyle === 'mage' ? 'Mage' : 'Range'
+        $('.currentPrayer').html(`Pray <span class="${currentStyle}">${neatCurrentStyle}</span>`)
+        const nextStyle = currentStyle === 'mage' ? 'Range' : 'Mage'
+        $('.prayTimer').html(`Pray ${nextStyle} in <span>${Math.abs(count -12)}</span> seconds`)
+        return setTimeout(() =>{
+          addCount();
+          myTimeout = startLoop();
+        }, 1000)
+      }
+
+      const addCount = () => {
+        const nextStyle = currentStyle === 'mage' ? 'Range' : 'Mage'
+
+        if (count === 12) {
+          if(currentStyle === 'mage') {
+            currentStyle = 'range'
+            count = 1;
+          }else if(currentStyle === 'range') {
+            currentStyle= 'mage'
+            count = 1;
+          }
+        } else {
+          count += 1;
+        }
+        const neatCurrentStyle = currentStyle === 'mage' ? 'Mage' : 'Range'
+        $('.currentPrayer').html(`Pray <span class="${currentStyle}">${neatCurrentStyle}</span>`)
+        if (count === 10) {
+          one.play();
+        }
+        if (count === 11) {
+          two.play();
+        }
+        if (count === 12) {
+          if (nextStyle === 'Range') {
+            range.play();
+          } else {
+            mage.play();
+          }
+        }
+      }
+    })
+    </script>
+  </body>
+<footer>
+<h1 > Made by Mazhar <a href="https://twitter.com/maz_rs"> @maz_rs </a> </h1>
+<!-- <h2>How it works</h2>
+<ul>
+<li>Click where the lvl 22 spawns in wave 1 (mind cardinal direction)</li>
+<li>Click where the two level 22's spawn in wave 2</li>
+<li>In 1/7.5 runs you'll need to select where the lvl 22 spawns in wave 4 (says on top left) </li>
+<li>Press the buttons or 'Q' for prev wave, and 'W' for next wave</li>
+<li>After wave 2 (sometimes 4) no more input is required </li>
+<li>Left side is current wave, right side is next wave</li>
+<li>Credit to FwostyMage for the algorithm </li> -->
+
+</ul>
+  </footer>
+</html>
