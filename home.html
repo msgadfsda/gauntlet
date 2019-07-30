@@ -6,12 +6,19 @@
     let count = 4;
     let currentStyle = null;
     let myTimeout;
+
+    function popUpWindow(URL, windowName, windowWidth, windowHeight) {
+    var centerLeft = (screen.width/2)-(windowWidth/2);
+    var centerTop = (screen.height/2)-(windowHeight/2);
+    var windowFeatures = 'toolbar=no, location=no, directories=no, status=no, menubar=no, titlebar=no, scrollbars=no, resizable=no, ';
+    return window.open(URL, windowName, windowFeatures +' width='+ windowWidth +', height='+ windowHeight +', top='+ centerTop +', left='+ centerLeft);
+   }
     </script>
     <style>
       button {
         padding: 25px 80px;
         color: white;
-        margin: 0 20px;
+        margin: 5px 20px;
         font-size: 24px;
         cursor: pointer;
       }
@@ -44,9 +51,6 @@
       .instructions div {
         color: cyan;
         text-align: center;
-      }
-      .hidden {
-        display: none;
       }
       .Tramplebutton {
         background: #ff6600;
@@ -81,6 +85,55 @@
       .prayTimer span {
         font-size: 48px;
       }
+      a {
+        color: yellow;
+        margin-bottom: 10px;
+      }
+      @media screen and (max-width: 400px) and (min-width: 0) {
+        .initialState {
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+        }
+        .instructions {
+          display: none;
+        }
+        footer {
+          display: none;
+        }
+        a {
+          display: none;
+        }
+        body {
+          overflow: hidden;
+        }
+        button {
+          padding: 5px;
+          font-size: 24px;
+        }
+        .currentPrayer {
+          font-size: 12px;
+        }
+          .prayTimer {
+          font-size: 12px;
+        }
+        .prayTimer span {
+          font-size: 16px;
+        }
+        .BtnContainer {
+          display: flex;
+        }
+        .startedStatus {
+          padding: 5px 0;
+        }
+        .BtnContainer button{
+          font-size: 12px;
+          margin: 0 5px;;
+        }
+      }
+      .hidden {
+        display: none;
+      }
     </style>
     <title>Gauntlet Helper</title>
   </head>
@@ -104,8 +157,11 @@
 
     <div class="instructions">
       <div>Instructions:</div> <br />As soon as the boss does its first attack click on the attack style the boss used. The timer assumes you clicked one second after being hit. <br/><br/> In the case of a trample attack press the 'I got trampled' button.
-      <br/><br/>
+      <br/>
       Turn sound on for audio notification
+      </div>
+      <a onclick="popUpWindow('http://127.0.0.1:5501/home.html','Example','100','100');" href="javascript:void(0);"> Click here for a popout version that you can use easier (popup)</a>
+
     </div>
     <div>
       <div class="initialState">
@@ -121,12 +177,14 @@
           <div class="currentPrayer"></div>
           <div class="prayTimer"></div>
         </div>
-        <button class="TrampleButton">
-            I got trampled
-        </button>
-        <button class="ResetButton">
-            Reset
-        </button>
+        <div class="BtnContainer">
+          <button class="TrampleButton">
+              I got trampled
+          </button>
+          <button class="ResetButton">
+              Reset
+          </button>
+        </div>
       </div>
     </div>
     <script>
@@ -205,16 +263,6 @@
   </body>
 <footer>
 <h1 > Made by Mazhar <a href="https://twitter.com/maz_rs"> @maz_rs </a> </h1>
-<!-- <h2>How it works</h2>
-<ul>
-<li>Click where the lvl 22 spawns in wave 1 (mind cardinal direction)</li>
-<li>Click where the two level 22's spawn in wave 2</li>
-<li>In 1/7.5 runs you'll need to select where the lvl 22 spawns in wave 4 (says on top left) </li>
-<li>Press the buttons or 'Q' for prev wave, and 'W' for next wave</li>
-<li>After wave 2 (sometimes 4) no more input is required </li>
-<li>Left side is current wave, right side is next wave</li>
-<li>Credit to FwostyMage for the algorithm </li> -->
-
 </ul>
   </footer>
 </html>
