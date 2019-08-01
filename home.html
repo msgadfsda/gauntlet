@@ -174,10 +174,7 @@
     <div class="buttonContainer">
       <div class="initialState">
         <button class="RangeButton">
-          Range
-        </button>
-        <button class="MageButton">
-          Mage
+          Start (1 sec after 1st attack)
         </button>
       </div>
       <div class="startedState hidden">
@@ -204,12 +201,6 @@
 
       $('.RangeButton').click(function(){
         currentStyle = 'range';
-        $('.initialState').addClass('hidden');
-        $('.startedState').removeClass('hidden');
-        myTimeout = startLoop();
-      })
-      $('.MageButton').click(function(){
-        currentStyle = 'mage';
         $('.initialState').addClass('hidden');
         $('.startedState').removeClass('hidden');
         myTimeout = startLoop();
